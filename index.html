@@ -212,6 +212,69 @@
             margin-left: 2px;
         }
 
+@media (max-width: 768px) {
+  html, body {
+    overflow-y: auto; /* Allows mobile users to scroll down through the list */
+    height: auto;
+    width: 100%;
+  }
+
+  /* Shrinks huge titles so they don't break onto multiple lines */
+  .profile-header {
+    position: relative;
+    top: auto;
+    left: auto;
+    text-align: center;
+    padding: 40px 20px 20px 20px;
+  }
+  .profile-title {
+    font-size: 45px;
+  }
+
+  /* Centers and wraps the countdown timer on narrow screens */
+  .countdown-display-node {
+    position: relative;
+    top: auto;
+    left: auto;
+    text-align: center;
+    padding: 0 20px 40px 20px;
+  }
+  .countdown-grid {
+    justify-content: center;
+    gap: 15px;
+  }
+  .countdown-label {
+    font-size: 24px;
+  }
+
+  /* Safely disables the rigid mathematical coordinates on mobile */
+  .radial-navigation-flow {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Neatly spaces buttons vertically */
+    padding-bottom: 60px;
+    pointer-events: auto;
+  }
+
+  /* Reformats buttons into mobile-friendly layout cards */
+  .hub-link-btn {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 85%;
+    max-width: 320px;
+    box-sizing: border-box;
+  }
+  .hub-link-btn:hover {
+    transform: scale(1.02);
+  }
+}
+
     </style>
 </head>
 <body>
@@ -273,6 +336,14 @@
         function generateArcNavigationLayout() {
             const elements = document.querySelectorAll('.arc-node');
             const totalElements = elements.length;
+
+  if (window.innerWidth <= 768) {
+    elements.forEach(element => {
+      element.style.left = '';
+      element.style.top = '';
+    });
+    return; // Stop running the rest of the function on mobile
+  }
             
             const screenSweepRadiusWidth = window.innerWidth * 0.65;  
             const screenSweepRadiusHeight = window.innerHeight * 0.75; 
