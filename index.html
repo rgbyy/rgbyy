@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rgbyy</title>
+    <style>
+        /* --- 💡 SYSTEM CONFIGURATION: LOAD LOCAL TRUETYPE FONT FILES --- */
+        
+        /* 1. Main Title Font File Route */
+        @font-face {
+            font-family: 'TitleFont'; 
+            src: url('customfont.ttf') format('truetype'); 
+        }
+
+        /* 2. Subheader Font File Route */
+        @font-face {
+            font-family: 'SubheaderFont'; 
+            src: url('AquilineTwo.ttf') format('truetype'); 
+        }
+
+        /* 3. Button/Link Font File Route */
+        @font-face {
+            font-family: 'ButtonFont'; 
+            src: url('paul.ttf') format('truetype'); 
+        }
+
+        /* Base page theme settings manually configured to dark mode */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'ButtonFont', sans-serif; /* Baseline fallback setup */
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000000; 
+            color: #ffffff;            
+            /* Targets your custom transparent image file */
+            cursor: url('cursor2.png'), auto;
+        }
+
+        /* --- Full-Screen Background Asset Wrappers --- */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1; 
+            overflow: hidden;
+            background-color: #000000;
+        }
+
+        .bg-asset-layer {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            opacity: 0.6; 
+        }
+
+        /* Fixed Top-Left Identity Area */
+        .profile-header {
+            position: fixed;
+            top: 40px;
+            left: calc(10vw + 40px); 
+            text-align: left;
+            z-index: 10; 
+        }
+
+        /* FONT 1: Custom local TTF mapped exclusively to the title string */
+        .profile-title {
+            font-family: 'TitleFont', sans-serif;
+            font-weight: normal; 
+            font-size: 75px; 
+            letter-spacing: 2px;
+            text-transform: none;
+            margin: 0 0 5px 0;
+            color: #ffffff; 
+        }
+
+        /* 💡 FONT 2: Custom local TTF mapped exclusively to the sub-label */
+        .profile-subtitle {
+            font-family: 'SubheaderFont', monospace;
+            font-size: 16px;
+            letter-spacing: 2.5px;
+            text-transform: none;
+            color: #cccccc;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        /* --- ARC PROGRESSION MATRIX SYSTEM --- */
+        .radial-navigation-flow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; 
+            z-index: 10; 
+        }
+
+        /* Absolute alignment rules for individual floating node assets */
+        .hub-link-btn {
+            position: absolute;
+            pointer-events: auto; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 190px; 
+            padding: 12px;
+            background-color: #000000; 
+            color: #ffffff;            
+            border: 3px solid #ffffff; 
+            font-weight: normal;
+            text-transform: none;
+            text-decoration: none;
+            letter-spacing: 1.5px;
+            font-size: 25px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); 
+            transition: all 0.2s ease-in-out;
+            cursor: inherit;
+            transform: translate(-50%, -50%); 
+            /* 💡 FONT 3: Custom local TTF mapped to all navigation links */
+            font-family: 'ButtonFont', sans-serif;
+        }
+
+        .hub-link-btn:hover {
+            background-color: #ffffff;
+            color: #000000;
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        /* Audio Control Bar Alignment Properties */
+        .embedded-audio-node {
+            background-color: #000000;
+            border: 3px solid #ffffff;
+            padding: 10px;
+            width: 190px;
+            box-sizing: border-box;
+        }
+
+        .audio-btn {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 6px 12px;
+            font-weight: normal;
+            text-transform: none;
+            cursor: inherit;
+            font-size: 25px;
+            letter-spacing: 1px;
+            width: 100%;
+            /* 💡 FONT 3: Applied natively inside media layout controller button */
+            font-family: 'ButtonFont', sans-serif;
+        }
+        .audio-btn:hover {
+            background: #000000;
+            color: #ffffff;
+            outline: 1px solid #ffffff;
+        }
+
+        /* --- Cryptic Real-Time Countdown Layout Window --- */
+                /* --- Cryptic Real-Time Countdown Layout Window --- */
+                /* --- Cryptic Real-Time Countdown Layout Window --- */
+        .countdown-display-node {
+            position: fixed;
+            top: 260px; /* Shifted tracking space safely down to clear space variables */
+            left: calc(10vw + 40px);
+            text-align: left;
+            z-index: 10;
+            color: #ffffff;
+            text-transform: none; 
+        }
+
+        .countdown-label {
+            font-family: 'HeaderFont', monospace;
+            font-size: 39px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        /* FIXED INTERIOR CONTAINERS: Builds a strict linear cell divider layout track grid */
+        .countdown-grid {
+            display: flex !important;
+            justify-content: flex-start;
+            gap: 25px; /* Explicitly forces a 25px wide un-crushable gap wall between metric blocks */
+        }
+
+        .time-block {
+            display: flex !important;
+            align-items: baseline;
+            gap: 2px;
+        }
+
+        /* Target formatting parameters for the red numeric characters */
+        .time-block span {
+            font-family: 'HeaderFont', monospace;
+            font-size: 42px; /* Enhanced visibility scale metrics */
+            font-weight: bold;
+            color: #ffffff; /* Glitch red theme accent parameter values */
+            letter-spacing: normal !important;
+        }
+
+        /* Label font properties (D, H, M, S) */
+        .time-block label {
+            font-family: 'HeaderFont', monospace;
+            font-size: 30px;
+            color: #ffffff;
+            margin-left: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+        <!-- CORE AUDIO COMPONENT -->
+    <audio id="featuredTrack" src="eyeshaha.wav" loop></audio>
+
+    <!-- 1. IMAGE BACKGROUND HOOK LAYER -->
+    <div class="bg-container">
+        <img src="background.jpg" alt="Angel Divider Artwork" class="bg-asset-layer">
+    </div>
+
+    <!-- 2. ARTIST PROFILE IDENTITY HEADER -->
+    <div class="profile-header">
+        <h1 class="profile-title">rgbyy</h1>
+        <p class="profile-subtitle">find me</p>
+    </div>
+
+    <!-- ANIMATED COMPONENT OVERLAY -->
+    <div class="spinning-axis-overlay"></div>
+
+    <!-- FIXED COUNTDOWN GRID GRID BLOCK -->
+    <div class="countdown-display-node">
+        <div class="countdown-label">DEATHMETAL RELEASES IN:</div>
+        <div class="countdown-grid">
+            <div class="time-block"><span id="daysBox">00</span><label>D</label></div>
+            <div class="time-block"><span id="hoursBox">00</span><label>H</label></div>
+            <div class="time-block"><span id="minsBox">00</span><label>M</label></div>
+            <div class="time-block"><span id="secsBox">00</span><label>S</label></div>
+        </div>
+    </div>
+
+
+
+
+    <!-- 3. ARC NAVIGATION OVERLAY LAYER -->
+    <div class="radial-navigation-flow">
+        
+        <a href="https://spotify.com" target="_blank" class="hub-link-btn arc-node">Spotify</a>
+        <a href="https://apple.com" target="_blank" class="hub-link-btn arc-node">Apple Music</a>
+        <a href="https://soundcloud.com" target="_blank" class="hub-link-btn arc-node">Soundcloud</a>
+        <a href="https://discord.gg" target="_blank" class="hub-link-btn arc-node">Discord</a>
+        <a href="https://instagram.com_" target="_blank" class="hub-link-btn arc-node">Instagram</a>
+        <a href="https://youtube.com" target="_blank" class="hub-link-btn arc-node">YouTube</a>
+        <a href="https://x.com_" target="_blank" class="hub-link-btn arc-node">Twitter</a>
+
+        <!-- Embedded primary audio player block node -->
+        <div class="hub-link-btn arc-node embedded-audio-node">
+            <p style="font-size: 25px; margin: 0 0 8px 0; font-weight: normal; letter-spacing: 1px;">Eyes</p>
+            <button class="audio-btn" id="audioToggle" onclick="togglePlayback()">▶</button>
+        </div>
+
+
+    </div>
+
+
+        <!-- 4. MATHEMATICAL CURVE COORDINATE ENGINE, CLOCK DRIVER, & AUDIO CONTROLLER -->
+    <script>
+        function generateArcNavigationLayout() {
+            const elements = document.querySelectorAll('.arc-node');
+            const totalElements = elements.length;
+            
+            const screenSweepRadiusWidth = window.innerWidth * 0.65;  
+            const screenSweepRadiusHeight = window.innerHeight * 0.75; 
+            
+            const originAxisX = 40 + (window.innerWidth * 0.10); 
+            const originAxisY = 190; 
+
+            elements.forEach((element, index) => {
+                const targetAngleRadian = (index / (totalElements - 1)) * (Math.PI / 2);
+                
+                const positionCoordinateX = originAxisX + (screenSweepRadiusWidth * Math.sin(targetAngleRadian));
+                const positionCoordinateY = originAxisY + (screenSweepRadiusHeight * Math.cos(targetAngleRadian));
+                
+                element.style.left = positionCoordinateX + 'px';
+                element.style.top = positionCoordinateY + 'px';
+            });
+        }
+
+        // FIXED ENGINE: Writes purely raw numeric values into isolated grid columns
+        function initializeCountdownTimer() {
+            const targetDate = new Date("Nov 27, 2026 00:00:00").getTime();
+
+            const clockInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distanceRemaining = targetDate - now;
+
+                // Time tracking system logic transformations
+                const days = Math.floor(distanceRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distanceRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distanceRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distanceRemaining % (1000 * 60)) / 1000);
+
+                // Writes clean integer values straight to individual container hooks
+                document.getElementById("daysBox").innerText = days < 10 ? "0" + days : days;
+                document.getElementById("hoursBox").innerText = hours < 10 ? "0" + hours : hours;
+                document.getElementById("minsBox").innerText = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById("secsBox").innerText = seconds < 10 ? "0" + seconds : seconds;
+
+                if (distanceRemaining < 0) {
+                    clearInterval(clockInterval);
+                    document.querySelector(".countdown-display-node").innerHTML = "<div class='countdown-label'>THE CYCLE CLOSES.</div>";
+                }
+            }, 1000);
+        }
+
+        // Audio Player Play/Pause Switcher Logic
+        function togglePlayback() {
+            const track = document.getElementById('featuredTrack');
+            const btn = document.getElementById('audioToggle');
+            
+            if (track.paused) {
+                track.play().catch(err => {
+                    console.log("Browser playback restriction tracking update deferred.", err);
+                });
+                btn.innerText = "⏸";
+            } else {
+                track.pause();
+                btn.innerText = "▶";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            generateArcNavigationLayout();
+            initializeCountdownTimer();
+        });
+        window.addEventListener('resize', generateArcNavigationLayout);
+    </script>
+
+
+</body>
+</html>
