@@ -212,6 +212,41 @@
             margin-left: 2px;
         }
 
+/* --- THIS LINE IS ALREADY IN YOUR CODE (Around Line 207) --- */
+.time-block label {
+  font-family: 'HeaderFont', monospace;
+  font-size: 30px;
+  color: #ffffff;
+  margin-left: 2px;
+}
+
+/* =======================================================================
+   💡 INJECTED CSS: Handles the line strike-through and overlays "armoiries"
+   ======================================================================= */
+.title-container {
+  position: relative;
+  display: inline-block;
+  margin-right: 8px; /* Spaces out the text before "RELEASES IN:" */
+}
+
+.scratched-title {
+  text-decoration: line-through;
+  text-decoration-color: #ffffff; /* Matches your white text theme */
+  text-decoration-thickness: 3px;
+  opacity: 0.6; /* Dims the original text slightly for better legibility */
+}
+
+.overwritten-text {
+  position: absolute;
+  top: -38px; /* Floats the new word directly above the scratched text */
+  left: 0;
+  font-size: 76px; /* Slightly smaller scale so it looks like a clean notation */
+  color: #ffffff; /* Distinct color so it stands out as an overwrite */
+  font-family: 'SubheaderFont', monospace; /* Uses your AquilineTwo font script styling */
+  white-space: nowrap;
+  line-height: 1;
+}
+
 @media (max-width: 768px) {
   html, body {
     overflow-y: auto; /* Allows mobile users to scroll down through the list */
@@ -298,17 +333,20 @@
 
     <!-- FIXED COUNTDOWN GRID GRID BLOCK -->
     <div class="countdown-display-node">
-        <div class="countdown-label">DEATHMETAL RELEASES IN:</div>
-        <div class="countdown-grid">
-            <div class="time-block"><span id="daysBox">00</span><label>D</label></div>
-            <div class="time-block"><span id="hoursBox">00</span><label>H</label></div>
-            <div class="time-block"><span id="minsBox">00</span><label>M</label></div>
-            <div class="time-block"><span id="secsBox">00</span><label>S</label></div>
-        </div>
+    <div class="countdown-label">
+        <div class="title-container" style="position: relative; display: inline-block; margin-right: 8px;">
+            <span class="overwritten-text">armoiries</span>
+            <span class="scratched-title">DEATHMETAL</span>
+        </div> 
+        RELEASES IN:
     </div>
-
-
-
+    <div class="countdown-grid">
+        <div class="time-block"><span id="daysBox">00</span><label>D</label></div>
+        <div class="time-block"><span id="hoursBox">00</span><label>H</label></div>
+        <div class="time-block"><span id="minsBox">00</span><label>M</label></div>
+        <div class="time-block"><span id="secsBox">00</span><label>S</label></div>
+    </div>
+</div>
 
     <!-- 3. ARC NAVIGATION OVERLAY LAYER -->
     <div class="radial-navigation-flow">
@@ -390,20 +428,26 @@
         }
 
         // Audio Player Play/Pause Switcher Logic
-        function togglePlayback() {
-            const track = document.getElementById('featuredTrack');
-            const btn = document.getElementById('audioToggle');
-            
-            if (track.paused) {
-                track.play().catch(err => {
-                    console.log("Browser playback restriction tracking update deferred.", err);
-                });
-                btn.innerText = "⏸";
-            } else {
-                track.pause();
-                btn.innerText = "▶";
-            }
-        }
+         function togglePlayback() {
+    const track = document.getElementById('featuredTrack');
+    const btn = document.getElementById('audioToggle');
+    
+    if (track.paused) {
+      btn.innerText = "⏸";
+      
+      track.play().catch(err => {
+        console.log("Playback failed or was blocked by the browser:", err);
+        
+        // Bounces the button appearance back dynamically if the file is blocked/missing
+        btn.innerText = "▶";
+        
+        alert("Audio could not be played. Please verify that your 'eyeshaha.wav' file sits inside the correct folder, or click anywhere on the page canvas first to clear browser privacy restrictions.");
+      });
+    } else {
+      track.pause();
+      btn.innerText = "▶";
+    }
+  }
 
         window.addEventListener('DOMContentLoaded', () => {
             generateArcNavigationLayout();
